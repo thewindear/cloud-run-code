@@ -12,13 +12,13 @@ import (
 func main() {
 	var port string
 	var configPath string
-	flag.StringVar(&port, "port", "9999", "接口服务端口号，默认为:9999")
-	flag.StringVar(&configPath, "config", "./config/docker_config.json", "服务配置文件,默认当前目录下config.json")
+	flag.StringVar(&port, "port", "9999", "api service port")
+	flag.StringVar(&configPath, "config", "./config/docker_config.json", "service config filepath")
 	flag.Parse()
 	log.SetPrefix("[cloud-run-code]")
 	err := service.InitDockerRunner(configPath)
 	if err != nil {
-		log.Fatalf("path config error: %s", err.Error())
+		log.Fatalf("initilize service failure: %s", err.Error())
 	}
 	http.HandleFunc("/run", ctl.RunController)
 	addr := net.JoinHostPort("0.0.0.0", port)
