@@ -1,0 +1,30 @@
+{
+  "timeout": 5,
+  "docker_base": "run -i --cpus=1 -m=512M --rm --network none -v {tmp_file}:/usr/src/myapp/{runner_filename} -w /usr/src/myapp {image} sh -c",
+  "docker_runner": {
+    "php": {
+      "ext": "php",
+      "filename": "app.php",
+      "image": "php:7.4.28-zts-alpine",
+      "cmd": "php app.php"
+    },
+    "node": {
+      "ext": "js",
+      "filename": "app.js",
+      "image": "node:17.8.0-alpine",
+      "cmd": "node app.js"
+    },
+    "python": {
+      "ext": "py",
+      "filename": "app.py",
+      "image": "python:3.9.12-alpine3.15",
+      "cmd":"python app.py"
+    },
+    "java": {
+      "ext": "java",
+      "filename": "Main.java",
+      "image": "openjdk:11-jdk-oraclelinux7",
+      "cmd": "javac Main.java && java Main"
+    }
+  }
+}
