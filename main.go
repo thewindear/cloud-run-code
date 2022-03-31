@@ -19,6 +19,7 @@ func main() {
     if err != nil {
         log.Fatalf("initilize service failure: %s", err.Error())
     }
+    http.HandleFunc("/languages", ctl.LanguagesController)
     http.HandleFunc("/run", ctl.RunController)
     addr := net.JoinHostPort("0.0.0.0", port)
     log.Println("running to " + addr)
