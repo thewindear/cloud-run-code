@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// RunController Post /run?lang={lang}
 func RunController(writer http.ResponseWriter, request *http.Request) {
 	ctx := &context.Context{Writer: writer, Req: request}
 	if ctx.Req.Method != "POST" {
@@ -17,16 +18,16 @@ func RunController(writer http.ResponseWriter, request *http.Request) {
 	}
 	lang := ctx.Get("lang", "")
 	if lang == "" {
-		ctx.Ret(http.StatusBadRequest, lang, "语言不能为空")
+		ctx.Ret(http.StatusBadRequest, lang, "lang parameter can't be empty")
 		return
 	} else {
 		if !service.DockerRunner.RunnerExists(lang) {
-			ctx.Ret(http.StatusBadRequest, lang, "暂不支持")
+			ctx.Ret(http.StatusBadRequest, lang, lang+"not support")
 			return
 		}
 		body, _ := ioutil.ReadAll(request.Body)
 		if len(body) == 0 {
-			ctx.Ret(http.StatusBadRequest, lang, "代码不能为空")
+			ctx.Ret(http.StatusBadRequest, lang, "The code required to be executed cannot be empty")
 			return
 		}
 
@@ -36,11 +37,11 @@ func RunController(writer http.ResponseWriter, request *http.Request) {
 
 		content, err := service.DockerRunner.Exec(cancelCtx, lang, code)
 		if err == nil {
-			ctx.OK(lang, string(content), "执行成功")
+			ctx.OK(lang, string(content), "execute success")
 			return
 		}
 		if err == service.TimeoutError {
-			ctx.Ret(http.StatusRequestTimeout, lang, "代码执行超时")
+			ctx.Ret(http.StatusRequestTimeout, lang, "execute timeout")
 			return
 		}
 		ctx.Ret(http.StatusInternalServerError, lang, string(content))
