@@ -25,6 +25,12 @@
       "filename": "Main.java",
       "image": "openjdk:11-jdk-oraclelinux7",
       "cmd": "javac Main.java && java Main"
+    },
+    "go": {
+      "ext": "go",
+      "filename": "main.go",
+      "image": "golang:1.18.0-alpine3.15",
+      "cmd": "go run main.go"
     }
   }
 }
